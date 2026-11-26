@@ -36,4 +36,17 @@ def get_calendar():
         {"saat": "18:00", "etkinlik": "Sahilde yürüyüş", "yer": "açık hava"},
     ]
 
+
 add_tool(get_calendar, "Kullanıcının yarınki planlarını getirir.", {})
+
+from brain.knowledge import Knowledge
+
+knowledge = Knowledge()
+
+
+def search_knowledge(query):
+    return knowledge.retrieve(query)
+
+
+add_tool(search_knowledge,
+         "ofis rehberinden arama yapar. kurallar, yağış ve şemsiye, servis, toplantı odaları, yemek gibi konular.", {"query": "aranacak konu"})

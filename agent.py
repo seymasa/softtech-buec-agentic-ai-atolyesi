@@ -18,7 +18,7 @@ class Agent:
         print("[PERCEPTION]", percept)
 
         for step in range(MAX_STEPS):
-            tool, args, answer = decide(self.memory, self.knowledge, TOOL_SCHEMAS)
+            tool, args, answer = decide(self.memory, TOOL_SCHEMAS)
             if answer:
                 print("[BRAIN] cevap:", answer)
                 break
@@ -31,6 +31,6 @@ class Agent:
 
 
 if __name__ == "__main__":
-    user_text = "İstanbul'da yarın yağmur yağar mı? planlarıma bak ona göre Şemsiye almalı mıyım?"
-    sky_image = "günlük güneşlik gökyüzü"
+    user_text = "Yarın yağmur yağarsa sahil yürüyüşüm ne olacak? Şemsiyeyi nereden bulurum?"
+    sky_image = "gri bulutlarla kaplı gökyüzü"
     Agent().run(user_text, sky_image)

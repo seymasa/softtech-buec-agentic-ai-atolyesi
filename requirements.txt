@@ -1,2 +1,6 @@
 openai
 python-dotenv
+
+sentence-transformers
+torch
+torchvision
