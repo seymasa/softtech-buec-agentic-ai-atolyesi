@@ -9,7 +9,7 @@ Hiçbir agent framework'ü kullanmadan, yaklaşık 120 satır Python ile yazılm
 
 Agent şu soruya cevap arıyor:
 
-> "Yarın yağmur yağarsa sahil yürüyüşüm ne olacak? Şemsiyeyi nereden bulurum?"
+> "İstanbul'da yarın yağmur yağarsa sahil yürüyüşüm ne olacak? Şemsiyeyi nereden bulurum?"
 
 Cevabın yarısı dış dünyada (hava durumu, takvim), yarısı **ofis rehberinde** ("yağışlı günlerde açık hava etkinlikleri kapalı alana alınır", "ofis girişindeki ortak şemsiyeler"). İkinci yarıyı hiçbir LLM kendi bilgisinden bilemez; rehberden okuması gerekir. Hangi tool'u hangi sırayla çağıracağına ve rehbere ne zaman bakacağına agent kendisi karar veriyor.
 
@@ -92,21 +92,22 @@ python agent.py
 Örnek çıktı:
 
 ```
-[PERCEPTION] Kullanıcı dedi ki: Yarın yağmur yağarsa sahil yürüyüşüm ne olacak? Şemsiyeyi nereden bulurum?
+[PERCEPTION] Kullanıcı dedi ki: İstanbul'da yarın yağmur yağarsa sahil yürüyüşüm ne olacak? Şemsiyeyi nereden bulurum?
 Gördüğün: gri bulutlarla kaplı gökyüzü
-[BRAIN] karar: search_knowledge {'query': 'ofiste şemsiye nerede'}
+[BRAIN] karar: weather_forecast {'city': 'İstanbul'}
+[ACTION] sonuç: {'sehir': 'İstanbul', 'yagmur_ihtimali': 0.8}
+[BRAIN] karar: search_knowledge {'query': 'İstanbul ofis şemsiye nereden alınır'}
 [ACTION] sonuç: Hava ve yağış: Yağış ihtimali 0.6 ve üzerindeyse hava yağışlı kabul edilir. Yağışlı günlerde açık hava etkinlikleri kapalı alana alınır. Ofis girişindeki ortak şemsiyelerden alabilirsiniz; ertesi gün geri bırakmanız yeterlidir.
-[BRAIN] karar: weather_forecast {'city': 'Istanbul'}
-[ACTION] sonuç: {'sehir': 'Istanbul', 'yagmur_ihtimali': 0.8}
-[BRAIN] cevap: Yarın İstanbul’da yağmur ihtimali %80 ‑ yağışlı bir gün bekleniyor. Bu durumda sahil yürüyüşünüz iptal edilip kapalı bir alana (örneğin ofis toplantı odası ya da kafe) alınabilir. Şemsiyeyi ofis girişindeki ortak şemsiyelerden alabilirsiniz; kullanıp ertesi gün geri bırakmanız yeterli. İyi yürüyüşler!
+[BRAIN] cevap: İstanbul’da yarın yağmur ihtimali %80 – yağışlı bir gün bekleniyor. Sahil yürüyüşünüzü kapalı bir alana taşımanız ya da ertelemeniz daha güvenli olur. Şemsiyeyi ofisin girişindeki ortak şemsiyelerden alabilirsiniz; kullanıp ertesi gün geri bırakmanız yeterli.
 ```
 
 Çıktıda dikkat edilecek şeyler:
 
-- Agent'a "önce rehbere, sonra havaya bak" diye bir sıra **verilmedi**. Tool'ları kendisi seçti; rehberde ne arayacağını (`'ofiste şemsiye nerede'`) da kendisi yazdı.
+- Agent'a "önce havaya, sonra rehbere bak" diye bir sıra **verilmedi**. Tool'ları kendisi seçti; rehberde ne arayacağını (`'İstanbul ofis şemsiye nereden alınır'`) da kendisi yazdı.
 - Görüntü "gri bulutlarla kaplı gökyüzü" dediği halde agent buna güvenmedi; hava durumunu tool'dan aldı.
 - "Kapalı alana alınır" ve "ofis girişindeki ortak şemsiyeler" yalnızca `brain/rehber.md` içinde yazıyor. Cevapta geçiyorsa doğru parça getirilmiş demektir.
 - Cevap LLM'den geldiği için her çalıştırmada kelimesi kelimesine aynı olmaz; tool sırası da değişebilir.
+- Soruda şehir adı bilerek var: `weather_forecast` şehir ister; soru şehirsiz olunca model tool çağırmak yerine "hangi şehirdesiniz?" diye sorup duruyor.
 
 ## 1. gün: agent nasıl inşa edildi
 

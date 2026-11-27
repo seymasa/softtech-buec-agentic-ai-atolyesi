@@ -31,6 +31,6 @@ class Agent:
 
 
 if __name__ == "__main__":
-    user_text = "Yarın yağmur yağarsa sahil yürüyüşüm ne olacak? Şemsiyeyi nereden bulurum?"
+    user_text = "İstanbul'da yarın yağmur yağarsa sahil yürüyüşüm ne olacak? Şemsiyeyi nereden bulurum?"
     sky_image = "gri bulutlarla kaplı gökyüzü"
     Agent().run(user_text, sky_image)
